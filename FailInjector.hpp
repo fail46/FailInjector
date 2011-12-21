@@ -20,6 +20,7 @@ using std::vector;
 // FailInjector
 #include "Resource.h"
 
+#define null 0
 typedef unsigned char byte;
 
 namespace UI
