@@ -20,6 +20,8 @@ using std::vector;
 // FailInjector
 #include "Resource.h"
 
+typedef unsigned char byte;
+
 namespace UI
 {
 	extern HWND MainWindow;

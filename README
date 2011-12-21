@@ -1,0 +1,5 @@
+A basic DLL injector. It supports 32-bit only, no 64-bit processes or DLLs.
+
+It uses the CreateRemoteThread injection method, and will detect basic hooks on LoadLibraryA.
+
+You'll need Visual C++ 2010 to compile it without modifications, because of the included icon.
