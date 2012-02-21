@@ -39,7 +39,7 @@ void __stdcall UI::Create (HINSTANCE Instance)
 		"FailInjector",
 		"FailInjector",
 		WS_SYSMENU,
-		CW_USEDEFAULT, CW_USEDEFAULT, 200, 115,
+		CW_USEDEFAULT, CW_USEDEFAULT, 206, 115,
 		nullptr, nullptr, Instance, nullptr);
 
 	UpdateWindow(MainWindow);
@@ -63,23 +63,28 @@ long __stdcall UI::MainUIProc (HWND Window, unsigned int Message, WPARAM wParam,
 		case WM_CREATE:
 			Selected = CreateWindowEx(0, "static", "No Module -> No Process",
 				WS_CHILD | WS_VISIBLE | SS_CENTER,
-				2, 65, 190, 25, Window, nullptr, nullptr, nullptr);
+				2, 65, 196, 25, Window, nullptr, nullptr, nullptr);
 			SendMessage(Selected, WM_SETFONT, reinterpret_cast<WPARAM>(GetStockObject(DEFAULT_GUI_FONT)), 0);
 
 			SelectModuleButton = CreateWindowEx(0, "button", "Select Module",
 				WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
-				4, 30, 90, 30, Window, reinterpret_cast<HMENU>(1), nullptr, nullptr);
+				4, 30, 93, 30, Window, reinterpret_cast<HMENU>(1), nullptr, nullptr);
 			SendMessage(SelectModuleButton, WM_SETFONT, reinterpret_cast<WPARAM>(GetStockObject(DEFAULT_GUI_FONT)), 0);
 
 			InjectButton = CreateWindowEx(0, "button", "Inject",
 				WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
-				98, 30, 90, 30, Window, reinterpret_cast<HMENU>(2), nullptr, nullptr);
+				101, 30, 93, 30, Window, reinterpret_cast<HMENU>(2), nullptr, nullptr);
 			SendMessage(InjectButton, WM_SETFONT, reinterpret_cast<WPARAM>(GetStockObject(DEFAULT_GUI_FONT)), 0);
 
 			ProcessList = CreateWindowEx(0, "combobox", "Process List",
 				WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST,
-				5, 5, 182, 20, Window, nullptr, nullptr, nullptr);
+				5, 5, 142, 20, Window, nullptr, nullptr, nullptr);
 			SendMessage(ProcessList, WM_SETFONT, reinterpret_cast<WPARAM>(GetStockObject(DEFAULT_GUI_FONT)), 0);
+
+			SendMessage(CreateWindowEx(0, "button", "Refresh",
+					WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+					150, 4, 45, 22, Window, reinterpret_cast<HMENU>(3), nullptr, nullptr),
+				WM_SETFONT, reinterpret_cast<WPARAM>(GetStockObject(DEFAULT_GUI_FONT)), 0);
 
 			UpdateProcessList();
 			break;
@@ -145,6 +150,10 @@ void __stdcall UI::CommandHandler (unsigned int Command, unsigned int High)
 			Injector::Inject(ProcessID, ModulePath.c_str());
 			UpdateProcessList();
 		}
+		break;
+
+	case 3:
+		UpdateProcessList();
 		break;
 	}
 
@@ -240,7 +249,7 @@ void UI::UpdateProcessList ()
 
 		CloseHandle(Handle);
 		Process.append(ModuleName);
-		SendMessage(ProcessList, CB_ADDSTRING, null, reinterpret_cast<LPARAM>(Process.c_str()));
+		SendMessage(ProcessList, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(Process.c_str()));
 		Process.clear();
 		i++;
 	}
