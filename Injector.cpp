@@ -2,6 +2,19 @@
 
 void Injector::Inject (unsigned int ProcessID, const char* ModulePath)
 {
+	void* Token = nullptr;
+	TOKEN_PRIVILEGES Privileges;
+	if(OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, reinterpret_cast<void**>(&Token)) == 0)
+	{
+		throw exception("Unable to open the local process token.");
+	}
+
+	Privileges.PrivilegeCount = 1;
+	LookupPrivilegeValue(nullptr, "SeDebugPrivilege", &Privileges.Privileges[0].Luid);
+	Privileges.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+	AdjustTokenPrivileges(Token, 0, &Privileges, sizeof(Privileges), nullptr, nullptr);
+	CloseHandle(Token);
+	
 	void* Handle = OpenProcess(PROCESS_ALL_ACCESS, false, ProcessID);
 	if(Handle == nullptr)
 	{
