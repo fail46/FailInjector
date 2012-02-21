@@ -12,14 +12,6 @@ HWND UI::Selected;
 
 void __stdcall UI::Create (HINSTANCE Instance)
 {
-	OSVERSIONINFO VersionInfo;
-	GetVersionEx(&VersionInfo);
-	if(VersionInfo.dwMajorVersion < 6)
-	{
-		MessageBox(nullptr, "This application requires Windows Vista or higher.", "Unsupported Operating System", MB_OK);
-		return;
-	}
-
 	WNDCLASSEX FIClass;
 	ZeroMemory(&FIClass, sizeof(WNDCLASSEX));
 
