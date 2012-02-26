@@ -231,7 +231,11 @@ void UI::UpdateProcessList ()
 		Process.append(" - ");
 
 		void* Handle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, false, Processes[i]);
-		if(GetModuleBaseName(Handle, 0, ModuleName, 25) == 0)
+		if(GetModuleBaseName(Handle, 0, ModuleName, 25) == 0
+#ifdef PROCESS_NAME
+			|| strcmpi(ModuleName, PROCESS_NAME) != 0
+#endif
+			)
 		{
 			CloseHandle(Handle);
 			Process.clear();
